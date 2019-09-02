@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"  
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"  
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"> 
+  <display-name>测试系统</display-name>
+	<!-- 激活Tomcat的defaultServlet来处理静态文件 -->
+  <servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.jpg</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.gif</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.png</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.js</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.css</url-pattern>
+  </servlet-mapping>
+  
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:/spring.xml</param-value>
+	</context-param>	
+	<context-param>
+		<param-name>logbackConfigLocation</param-name>
+		<param-value>WEB-INF/classes/logback.xml</param-value>
+	</context-param>
+	
+   <context-param>
+	    <param-name>webAppRootKey</param-name>
+	    <param-value>TYBusinessServer</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>SpringMvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath*:/spring/spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SpringMvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!-- <servlet>
+		<servlet-name>TMSMinaServer</servlet-name>
+		<servlet-class>com.whty.example.socket.mina.TMSMinaServer</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet> -->
+	
+	<!-- CXF -->  
+    <servlet>  
+        <servlet-name>cxf</servlet-name>  
+        <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    </servlet>  
+    <servlet-mapping>  
+        <servlet-name>cxf</servlet-name>  
+        <url-pattern>/webservice/*</url-pattern>  
+    </servlet-mapping>
+	
+</web-app>

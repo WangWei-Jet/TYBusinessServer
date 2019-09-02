@@ -1,0 +1,496 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.whty</groupId>
+  <artifactId>TYBusinessServer</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>TYBusinessServer</name>
+  <url>http://maven.apache.org</url>
+  
+  
+	<properties>
+		<jdk.version>1.7</jdk.version>
+		<version.servlet-api>2.5</version.servlet-api>
+		<version.jstl>1.2</version.jstl>
+		<version.standard>1.1.2</version.standard>
+		<version.aspectj>1.7.0</version.aspectj>
+		<version.spring-xml>2.0.0-M1</version.spring-xml>
+		<version.springframework>4.1.6.RELEASE</version.springframework>
+		<!-- <version.springframework>5.0.6.RELEASE</version.springframework> -->
+		<version.bonecp-spring>0.8.0.RELEASE</version.bonecp-spring>
+		<version.mybatis-spring>1.2.2</version.mybatis-spring>
+		<version.mybatis>3.2.8</version.mybatis>
+		<version.mysql>5.1.34</version.mysql>
+		<version.miemiedev>1.2.15</version.miemiedev>
+		<version.commons-fileupload>1.3.1</version.commons-fileupload>
+		<version.commons-io>2.4</version.commons-io>
+		<version.logback>1.2.3</version.logback>
+		<version.commons-lang3>3.2.1</version.commons-lang3>
+		<version.beanutils>1.9.2</version.beanutils>
+		<version.gson>2.3.1</version.gson>
+		<version.jettison>1.2</version.jettison>
+		<version.jackson-core>2.3.0</version.jackson-core>
+		<version.jackson-asl>1.9.13</version.jackson-asl>
+		<version.webservice>2.0</version.webservice>
+		<cxf.version>3.1.11</cxf.version>
+		<version.mina>2.0.16</version.mina>
+		<version.activiti>5.17.0</version.activiti>
+	</properties>
+	
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    
+    
+	<!-- web -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>${version.servlet-api}</version>
+	</dependency>
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>jstl</artifactId>
+		<version>${version.jstl}</version>
+	</dependency>
+	<dependency>
+		<groupId>taglibs</groupId>
+		<artifactId>standard</artifactId>
+		<version>${version.standard}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjrt</artifactId>
+		<version>${version.aspectj}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+		<version>${version.aspectj}</version>
+	</dependency>
+	
+	<!-- spring framework -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>${version.springframework}</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>${version.springframework}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-tx</artifactId>
+		<version>${version.springframework}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-jdbc</artifactId>
+		<version>${version.springframework}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-aspects</artifactId>
+		<version>${version.springframework}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-web</artifactId>
+		<version>${version.springframework}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>${version.springframework}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-orm</artifactId>
+		<version>${version.springframework}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context-support</artifactId>
+		<version>${version.springframework}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.ws</groupId>
+		<artifactId>spring-xml</artifactId>
+		<version>${version.spring-xml}</version>
+	</dependency>
+	
+	<!-- 数据库 -->
+	<dependency>
+		<groupId>com.jolbox</groupId>
+		<artifactId>bonecp-spring</artifactId>
+		<version>${version.bonecp-spring}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis-spring</artifactId>
+		<version>${version.mybatis-spring}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis</artifactId>
+		<version>${version.mybatis}</version>
+	</dependency>
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>${version.mysql}</version>
+	</dependency>
+	<!-- web service -->
+	<dependency>
+		<groupId>javax.ws.rs</groupId>
+		<artifactId>javax.ws.rs-api</artifactId>
+		<version>${version.webservice}</version>
+	</dependency>
+	<!-- 分页 -->
+	<dependency>
+		<groupId>com.github.miemiedev</groupId>
+		<artifactId>mybatis-paginator</artifactId>
+		<version>${version.miemiedev}</version>
+	</dependency>
+	<!-- 上传 -->
+	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>${version.commons-io}</version>
+	</dependency>
+	<dependency>
+		<groupId>commons-fileupload</groupId>
+		<artifactId>commons-fileupload</artifactId>
+		<version>${version.commons-fileupload}</version>
+	</dependency>
+	
+	<!-- 工具 -->
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-lang3</artifactId>
+		<version>${version.commons-lang3}</version>
+	</dependency>
+	<dependency>
+		<groupId>commons-beanutils</groupId>
+		<artifactId>commons-beanutils</artifactId>
+		<version>${version.beanutils}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.google.code.gson</groupId>
+		<artifactId>gson</artifactId>
+		<version>${version.gson}</version>
+	</dependency>
+	
+	<!-- json lib -->
+	<dependency>
+		<groupId>org.codehaus.jettison</groupId>
+		<artifactId>jettison</artifactId>
+		<version>${version.jettison}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-core-asl</artifactId>
+		<version>${version.jackson-asl}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>${version.jackson-asl}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>${version.jackson-core}</version>
+	</dependency>
+	<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-core</artifactId> 
+		<version>${version.jackson-annotation}</version> </dependency> -->
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-core</artifactId>
+		<version>${version.jackson-core}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.jaxrs</groupId>
+		<artifactId>jackson-jaxrs-json-provider</artifactId>
+		<version>2.8.8</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.codehaus.jackson</groupId>
+	    <artifactId>jackson-jaxrs</artifactId>
+	    <version>1.9.13</version>
+	</dependency>
+	
+	<!-- Logging -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+		<version>1.7.5</version>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+		<version>1.7.5</version>
+	</dependency>
+	<dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-classic</artifactId>
+		<version>${version.logback}</version>
+	</dependency>
+	<dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-access</artifactId>
+		<version>${version.logback}</version>
+	</dependency>
+	<dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-core</artifactId>
+		<version>${version.logback}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.logback-extensions</groupId>
+		<artifactId>logback-ext-spring</artifactId>
+		<version>0.1.2</version>
+		<scope>compile</scope>
+	</dependency>
+	<!-- CXF -->
+    <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+        <version>${cxf.version}</version>
+    </dependency>
+    <dependency>  
+        <groupId>org.apache.cxf</groupId>  
+        <artifactId>cxf-rt-frontend-jaxrs</artifactId>  
+        <version>${cxf.version}</version>  
+    </dependency>
+    <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-http</artifactId>
+        <version>${cxf.version}</version>
+    </dependency>
+        <!-- Jetty is needed if you're are not using the CXFServlet -->
+    <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-http-jetty</artifactId>
+        <version>${cxf.version}</version>
+    </dependency>
+    
+    <!-- certification query -->
+    <dependency>
+		<groupId>net.sf.json-lib</groupId>
+		<artifactId>json-lib</artifactId>
+		<version>2.4</version>
+		<classifier>jdk15</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.bouncycastle</groupId>
+		<artifactId>bcprov-jdk16</artifactId>
+		<version>1.46</version>
+	</dependency>
+	<!-- 
+    <dependency>
+	    <groupId>eid</groupId>  
+		<artifactId>eid-sdk</artifactId>  
+		<version>1.0</version>  
+		<scope>system</scope>  
+		<systemPath>${project.basedir}/lib/eID.SDK.Service.idocr_V1.3.3-2017052502.jar  
+		</systemPath>
+    </dependency>
+     -->
+    <!-- <dependency>
+	    <groupId>eid</groupId>  
+		<artifactId>eid-sdk</artifactId>  
+		<version>1.0</version>  
+		<scope>system</scope>  
+		<systemPath>${project.basedir}/lib/eID.SDK.Service.Idocr-Release-1.0.0.jar  
+		</systemPath>
+    </dependency> -->
+    <dependency>
+	    <groupId>eid</groupId>  
+		<artifactId>eid-sdk</artifactId>  
+		<version>1.0</version>  
+		<scope>system</scope>  
+		<systemPath>${project.basedir}/lib/eID.SDK.Service.Idocr-Release-1.2.0.jar  
+		</systemPath>
+    </dependency>
+    
+    <!-- JNA -->
+    <dependency>
+	    <groupId>net.java.dev.jna</groupId>
+	    <artifactId>jna</artifactId>
+	    <version>4.2.2</version>
+	</dependency>
+	<!-- Mina -->
+	
+	<dependency>
+		<groupId>org.apache.mina</groupId>
+		<artifactId>mina-core</artifactId>
+		<version>${version.mina}</version>
+		<type>bundle</type>  
+   		<scope>compile</scope>  
+	</dependency>
+	<dependency>  
+           <groupId>org.apache.mina</groupId>  
+           <artifactId>mina-filter-compression</artifactId>  
+           <version>${version.mina}</version>  
+       </dependency>
+	<dependency>
+		<groupId>org.apache.mina</groupId>
+		<artifactId>mina-integration-beans</artifactId>
+		<version>${version.mina}</version>
+	</dependency>
+    <dependency>
+        <groupId>org.apache.mina</groupId>
+        <artifactId>mina-integration-spring</artifactId>
+        <version>1.1.7</version>
+    </dependency>
+    
+    <!-- netty -->
+    <dependency>
+	    <groupId>io.netty</groupId>
+	    <artifactId>netty-all</artifactId>
+	    <version>4.1.24.Final</version>
+	</dependency>
+    
+    <!-- activiti -->
+    
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-engine</artifactId>
+      <version>${version.activiti}</version>
+      <!-- <scope>test</scope> -->
+    </dependency>
+
+    <dependency>
+    	<groupId>org.activiti</groupId>
+    	<artifactId>activiti-bpmn-converter</artifactId>
+    	<version>${version.activiti}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.activiti</groupId>
+    	<artifactId>activiti-bpmn-model</artifactId>
+    	<version>${version.activiti}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.activiti</groupId>
+    	<artifactId>activiti-bpmn-layout</artifactId>
+    	<version>${version.activiti}</version>
+    </dependency>
+    <dependency>
+	    <groupId>org.activiti</groupId>
+	    <artifactId>activiti-process-validation</artifactId>
+	    <version>${version.activiti}</version>
+	</dependency>
+	<dependency>  
+	    <groupId>org.activiti</groupId>  
+	    <artifactId>activiti-spring</artifactId>  
+	    <version>${version.activiti}</version>  
+	</dependency>
+    
+    <!-- <dependency>
+	  <groupId>org.activiti</groupId>
+	  <artifactId>activiti-engine</artifactId>
+	  <version>6.0.0</version>
+	</dependency> -->
+	
+	<dependency>
+	    <groupId>io.netty</groupId>
+	    <artifactId>netty-all</artifactId> <!-- Use 'netty-all' for 4.0 or above -->
+	    <version>4.1.25.Final</version>
+	    <scope>compile</scope>
+	  </dependency>
+
+    
+    
+  </dependencies>
+  
+  <build>
+    <finalName>TYBusinessServer</finalName>
+    
+	<plugins>
+		<plugin>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-maven-plugin</artifactId>
+			<version>8.1.16.v20140903</version>
+			<configuration>
+				<contextXml>${project.basedir}/src/test/resources/jetty.xml</contextXml>
+				<jvmArgs>-XX:PermSize=512M -XX:MaxPermSize=512M -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</jvmArgs>
+				<webApp>
+					<contextPath>/TYBusinessServer</contextPath>
+				</webApp>
+				<connectors>
+					<connector implementation="org.eclipse.jetty.server.bio.SocketConnector">
+						<port>8080</port>
+					</connector>
+				</connectors>
+			</configuration>
+		</plugin>
+		<plugin>
+		    <groupId>org.apache.felix</groupId>  
+		    <artifactId>maven-bundle-plugin</artifactId>  
+			<version>3.2.0</version>
+		    <extensions>true</extensions>  
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.1</version>
+			<configuration>
+				<source>${jdk.version}</source>
+				<target>${jdk.version}</target>
+				<encoding>utf8</encoding>
+			</configuration>
+		</plugin>
+		<plugin>
+			<artifactId>maven-war-plugin</artifactId>
+			<version>2.1.1</version>
+			<configuration>
+				<warSourceDirectory> ${basedir}/src/main/webapp
+				</warSourceDirectory>
+				<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+				<webResources>  
+			        <resource>  
+			            <directory>${project.basedir}/lib</directory>  
+			            <targetPath>WEB-INF/lib</targetPath>  
+			            <filtering>false</filtering>  
+			            <includes>  
+			                <include>**/*.jar</include>  
+			            </includes>  
+			        </resource>  
+			    </webResources>
+			</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>findbugs-maven-plugin</artifactId>
+			<version>2.5.2</version>
+			<configuration>
+				<findbugsXmlOutput>true</findbugsXmlOutput>
+				<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+				<xmlOutput>true</xmlOutput>
+			</configuration>
+		</plugin>
+		<!-- maven项目部署到tomcat7插件(同时涉及tomact user设置，maven的setting设置,maven的setting设置主要是默认中央库可能下载失败的问题，使用国内映射),与tomcat6配置有所不同 -->
+		<!-- <plugin>
+			<groupId>org.apache.tomcat.maven</groupId>
+			<artifactId>tomcat7-maven-plugin</artifactId>
+			<version>2.5</version>
+			<configuration>
+				<url>http://localhost:8081/manager/text</url>
+				<server>tomcat7</server>
+				<path>/mam-ms</path>
+			</configuration>
+		</plugin>
+		-->
+	</plugins>
+  </build>
+  
+</project>

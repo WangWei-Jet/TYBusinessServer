@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="D:\tools\repository\mysql\mysql-connector-java\5.1.34\mysql-connector-java-5.1.34.jar" />
+	<context id="context1">
+<!-- 		<jdbcConnection driverClass="com.mysql.jdbc.Driver" -->
+<!-- 			connectionURL="jdbc:mysql://localhost:3306/market" userId="dm" -->
+<!-- 			password="whty1234" /> -->
+<!-- 		<javaModelGenerator targetPackage="com.whty.example.pojo" -->
+<!-- 			targetProject="mam-ms Maven Webapp/src/main/java" /> -->
+<!-- 		<sqlMapGenerator targetPackage="com.whty.example.mapping" -->
+<!-- 			targetProject="mam-ms Maven Webapp/src/main/java" /> -->
+<!-- 		<javaClientGenerator targetPackage="com.whty.example.mapping" -->
+<!-- 			targetProject="mam-ms Maven Webapp/src/main/java" type="XMLMAPPER" /> -->
+<!-- 		<table schema="market" tableName="v_base_roles_agent" -->
+<!-- 			domainObjectName="BaseRoleAgentView" enableCountByExample="true" /> -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/test" userId="root"
+			password="111111" />
+		<javaModelGenerator targetPackage="com.whty.example.pojo"
+			targetProject="TYBusinessServer/src/main/java" />
+		<sqlMapGenerator targetPackage="com.whty.example.mapping"
+			targetProject="TYBusinessServer/src/main/java" />
+		<javaClientGenerator targetPackage="com.whty.example.mapper"
+			targetProject="TYBusinessServer/src/main/java" type="XMLMAPPER" />
+		<table schema="test" tableName="t_facecompare_record_addition"
+			domainObjectName="FacecompareRecordAddition" enableCountByExample="true" />
+	</context>
+</generatorConfiguration>

@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="produceProcess" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="usertask1" name="订单输入">
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.whty.example.activiti.produce.OrderInputListener"></activiti:taskListener>
+        <activiti:taskListener event="complete" class="com.whty.example.activiti.produce.OrderInputEndListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="usertask2" name="分配SN">
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.whty.example.activiti.produce.DistributeSnListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask3" name="分配MAC/IMEI">
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.whty.example.activiti.produce.DistributeMacListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask4" name="生产文件管理">
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.whty.example.activiti.produce.MakeProduceToolListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask5" name="测试">
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.whty.example.activiti.produce.TestListener"></activiti:taskListener>
+        <activiti:taskListener event="complete" class="com.whty.example.activiti.produce.TestEndListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask6" name="生产发布">
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.whty.example.activiti.produce.ProducePublishListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask7" name="生产助理">
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.whty.example.activiti.produce.ProducePrepareListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway" default="flow51"></exclusiveGateway>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway" default="flow54"></exclusiveGateway>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway" default="flow39"></exclusiveGateway>
+    <sequenceFlow id="flow24" sourceRef="usertask5" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="mailtask1" name="通知分配SN" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${snMailTo}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[${snMailFrom}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="charset">
+          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${snMailContent}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${snMailSubject}]]></activiti:expression>
+        </activiti:field>
+        <activiti:executionListener event="start" class="com.whty.example.activiti.produce.DistributeSnNotificationListener"></activiti:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow30" sourceRef="mailtask1" targetRef="usertask2"></sequenceFlow>
+    <serviceTask id="mailtask2" name="通知分配MAC" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${macMailTo}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[${macMailFrom}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${macMailSubject}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="charset">
+          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${macMailContent}]]></activiti:expression>
+        </activiti:field>
+        <activiti:executionListener event="start" class="com.whty.example.activiti.produce.DistributeMacNotificationListener"></activiti:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow32" sourceRef="mailtask2" targetRef="usertask3"></sequenceFlow>
+    <serviceTask id="mailtask3" name="通知测试邮件" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${testMailTo}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[${testMailFrom}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="charset">
+          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${testMailContent}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${testMailSubject}]]></activiti:expression>
+        </activiti:field>
+        <activiti:executionListener event="start" class="com.whty.example.activiti.produce.TestNotificationListener"></activiti:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow33" sourceRef="usertask4" targetRef="mailtask3"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="mailtask3" targetRef="usertask5"></sequenceFlow>
+    <serviceTask id="mailtask4" name="通知制作生产工具" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${produceToolMailTo}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[${produceToolMailFrom}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${produceToolMailSubject}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${produceToolMailContent}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="charset">
+          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+        </activiti:field>
+        <activiti:executionListener event="start" class="com.whty.example.activiti.produce.MakeProduceToolNotificationListener"></activiti:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="mailtask5" name="通知生产发布" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${producePublishMailTo}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[${producePublishMailFrom}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${producePublishMailSubject}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${producePublishMailContent}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="charset">
+          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+        </activiti:field>
+        <activiti:executionListener event="start" class="com.whty.example.activiti.produce.ProducePublishNotificationListener"></activiti:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="mailtask6" name="通知生产准备" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${producePrepareMailTo}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[${producePrepareMailFrom}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${producePrepareMailSubject}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${producePrepareMailContent}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="charset">
+          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+        </activiti:field>
+        <activiti:executionListener event="start" class="com.whty.example.activiti.produce.ProducePrepareNotificationListener"></activiti:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow37" name="测试不通过" sourceRef="exclusivegateway3" targetRef="mailtask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${testPass=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="mailtask4" targetRef="usertask4"></sequenceFlow>
+    <sequenceFlow id="flow39" name="测试通过" sourceRef="exclusivegateway3" targetRef="mailtask5"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="mailtask5" targetRef="usertask6"></sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="usertask6" targetRef="mailtask6"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="mailtask6" targetRef="usertask7"></sequenceFlow>
+    <sequenceFlow id="flow43" sourceRef="usertask7" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="mailtask8" name="通知制作生产工具" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${produceToolMailTo}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[${produceToolMailFrom}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${produceToolMailSubject}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="charset">
+          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${produceToolMailContent}]]></activiti:expression>
+        </activiti:field>
+        <activiti:executionListener event="start" delegateExpression="${makeProduceToolNotificationListener}"></activiti:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow45" sourceRef="mailtask8" targetRef="usertask4"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <inclusiveGateway id="inclusivegateway1" name="Inclusive Gateway"></inclusiveGateway>
+    <sequenceFlow id="flow46" sourceRef="usertask1" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow47" sourceRef="parallelgateway1" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="parallelgateway1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow49" sourceRef="exclusivegateway1" targetRef="mailtask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasKeyFile=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow51" sourceRef="exclusivegateway1" targetRef="inclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway2" targetRef="mailtask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasKeyFile=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow54" sourceRef="exclusivegateway2" targetRef="inclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow55" sourceRef="inclusivegateway1" targetRef="mailtask8"></sequenceFlow>
+    <sequenceFlow id="flow56" sourceRef="usertask3" targetRef="inclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow57" sourceRef="usertask2" targetRef="inclusivegateway1"></sequenceFlow>
+    <textAnnotation id="textannotation1">
+      <text>建立生产订单，提供型号，数量，秘钥文件</text>
+    </textAnnotation>
+    <association id="association1" sourceRef="usertask1" targetRef="textannotation1"></association>
+    <textAnnotation id="textannotation2">
+      <text>分配SN号段</text>
+    </textAnnotation>
+    <association id="association2" sourceRef="usertask2" targetRef="textannotation2"></association>
+    <textAnnotation id="textannotation3">
+      <text>分配MAC地址，IMEI</text>
+    </textAnnotation>
+    <association id="association3" sourceRef="usertask3" targetRef="textannotation3"></association>
+    <textAnnotation id="textannotation4">
+      <text>制作生产工具并放在SVN相关路径</text>
+    </textAnnotation>
+    <association id="association4" sourceRef="usertask4" targetRef="textannotation4"></association>
+    <textAnnotation id="textannotation5">
+      <text>生产工具下载到本地测试</text>
+    </textAnnotation>
+    <association id="association5" sourceRef="usertask5" targetRef="textannotation5"></association>
+    <textAnnotation id="textannotation6">
+      <text>从SVN上把文件整理到发布目录</text>
+    </textAnnotation>
+    <association id="association6" sourceRef="usertask6" targetRef="textannotation6"></association>
+    <textAnnotation id="textannotation7">
+      <text>从SVN上下载文件发给代工厂，并提供母POS</text>
+    </textAnnotation>
+    <association id="association7" sourceRef="usertask7" targetRef="textannotation7"></association>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_produceProcess">
+    <bpmndi:BPMNPlane bpmnElement="produceProcess" id="BPMNPlane_produceProcess">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="105.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="70.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="499.0" y="499.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="358.0" y="353.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="358.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="626.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="880.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="880.0" y="489.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="584.0" y="489.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="220.0" y="282.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="220.0" y="156.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="912.0" y="306.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask1" id="BPMNShape_mailtask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="188.0" y="353.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask2" id="BPMNShape_mailtask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="188.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask3" id="BPMNShape_mailtask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="750.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask4" id="BPMNShape_mailtask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="750.0" y="299.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask5" id="BPMNShape_mailtask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="880.0" y="382.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask6" id="BPMNShape_mailtask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="730.0" y="489.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask8" id="BPMNShape_mailtask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="490.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="220.0" y="217.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="inclusivegateway1" id="BPMNShape_inclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="390.0" y="217.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
+        <omgdc:Bounds height="50.0" width="100.0" x="23.0" y="147.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation2" id="BPMNShape_textannotation2">
+        <omgdc:Bounds height="50.0" width="100.0" x="460.0" y="282.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation3" id="BPMNShape_textannotation3">
+        <omgdc:Bounds height="50.0" width="100.0" x="460.0" y="147.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation4" id="BPMNShape_textannotation4">
+        <omgdc:Bounds height="50.0" width="100.0" x="744.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation5" id="BPMNShape_textannotation5">
+        <omgdc:Bounds height="50.0" width="100.0" x="920.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation6" id="BPMNShape_textannotation6">
+        <omgdc:Bounds height="50.0" width="100.0" x="779.0" y="420.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation7" id="BPMNShape_textannotation7">
+        <omgdc:Bounds height="50.0" width="100.0" x="604.0" y="420.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="932.0" y="265.0"></omgdi:waypoint>
+        <omgdi:waypoint x="932.0" y="306.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="122.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="122.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="293.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="358.0" y="380.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="293.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="358.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="731.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="237.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="855.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="880.0" y="237.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="912.0" y="326.0"></omgdi:waypoint>
+        <omgdi:waypoint x="855.0" y="326.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="60.0" x="861.0" y="300.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="750.0" y="326.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="326.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="265.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="932.0" y="346.0"></omgdi:waypoint>
+        <omgdi:waypoint x="932.0" y="382.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="48.0" x="940.0" y="352.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="932.0" y="437.0"></omgdi:waypoint>
+        <omgdi:waypoint x="932.0" y="489.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="880.0" y="516.0"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="516.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="730.0" y="516.0"></omgdi:waypoint>
+        <omgdi:waypoint x="689.0" y="516.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="584.0" y="516.0"></omgdi:waypoint>
+        <omgdi:waypoint x="534.0" y="516.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="595.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="626.0" y="237.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="175.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="237.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="240.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="196.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="240.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="282.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="240.0" y="322.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="353.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="260.0" y="302.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="302.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="257.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="240.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
+        <omgdi:waypoint x="260.0" y="176.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="176.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
+        <omgdi:waypoint x="430.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="237.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
+        <omgdi:waypoint x="410.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
+        <omgdi:waypoint x="410.0" y="353.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="257.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
+        <omgdi:waypoint x="122.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="73.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association2" id="BPMNEdge_association2">
+        <omgdi:waypoint x="410.0" y="353.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="332.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association3" id="BPMNEdge_association3">
+        <omgdi:waypoint x="410.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association4" id="BPMNEdge_association4">
+        <omgdi:waypoint x="678.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="794.0" y="180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association5" id="BPMNEdge_association5">
+        <omgdi:waypoint x="932.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association6" id="BPMNEdge_association6">
+        <omgdi:waypoint x="932.0" y="489.0"></omgdi:waypoint>
+        <omgdi:waypoint x="829.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association7" id="BPMNEdge_association7">
+        <omgdi:waypoint x="636.0" y="489.0"></omgdi:waypoint>
+        <omgdi:waypoint x="654.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

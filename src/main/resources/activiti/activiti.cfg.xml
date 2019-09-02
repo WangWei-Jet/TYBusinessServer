@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="activitiDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+	    <property name="driverClass" value="com.mysql.jdbc.Driver" />
+	    <property name="url" value="${activiti.jdbc.url}" />
+	    <property name="username" value="root" />
+	    <property name="password" value="111111" />
+	 </bean>
+	 
+	 <bean id="activitiTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="activitiDataSource" />
+	  </bean>
+	
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+	    <property name="dataSource" ref="activitiDataSource" />
+	    <property name="transactionManager" ref="activitiTransactionManager" />
+	    <property name="databaseSchemaUpdate" value="true" />
+	    <property name="asyncExecutorActivate" value="false" />
+	    <property name="mailServerHost" value="10.8.8.250" />
+        <property name="mailServerPort" value="25" />  
+        <property name="mailServerUsername" value="Wangwei01"></property>  
+        <property name="mailServerPassword" value="Ww123456"></property>
+	  </bean>
+	  
+	    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		    <property name="processEngineConfiguration" ref="processEngineConfiguration" />
+		  </bean>
+	  
+	  <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+	  <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+	  <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+	  <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+	  <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+	
+</beans>
