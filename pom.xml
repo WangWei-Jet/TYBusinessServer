@@ -15,7 +15,7 @@
 		<version.jstl>1.2</version.jstl>
 		<version.standard>1.1.2</version.standard>
 		<version.aspectj>1.7.0</version.aspectj>
-		<version.spring-xml>2.0.0-M1</version.spring-xml>
+		<version.spring-xml>2.4.5.RELEASE</version.spring-xml>
 		<version.springframework>4.1.6.RELEASE</version.springframework>
 		<!-- <version.springframework>5.0.6.RELEASE</version.springframework> -->
 		<version.bonecp-spring>0.8.0.RELEASE</version.bonecp-spring>
