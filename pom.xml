@@ -28,7 +28,7 @@
 		<version.logback>1.2.3</version.logback>
 		<version.commons-lang3>3.2.1</version.commons-lang3>
 		<version.beanutils>1.9.2</version.beanutils>
-		<version.gson>2.3.1</version.gson>
+		<version.gson>2.8.9</version.gson>
 		<version.jettison>1.2</version.jettison>
 		<version.jackson-core>2.10.0.pr2</version.jackson-core>
 		<version.jackson-asl>1.9.13</version.jackson-asl>
